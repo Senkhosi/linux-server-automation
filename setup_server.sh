@@ -1,15 +1,11 @@
 #!/bin/bash
 
-# Exit immediately if a command fails
 set -e
-
 echo "===== Starting Linux Server Automation ====="
 
-# Log file
 LOGFILE="/var/log/server_setup.log"
 exec > >(tee -a $LOGFILE) 2>&1
 
-# Ensure script runs as root
 if [ "$EUID" -ne 0 ]; then
   echo "Please run this script with sudo."
   exit 1
@@ -57,10 +53,8 @@ echo "Deploying Docker container..."
 
 CONTAINER_NAME="nginx-server"
 
-# Remove old container if it exists
 docker rm -f $CONTAINER_NAME 2>/dev/null || true
 
-# Run new container
 docker run -d --name $CONTAINER_NAME -p 8080:80 nginx
 
 echo "Waiting for container to start..."
