@@ -1,0 +1,25 @@
+name: Linux Server Automation CI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  test-script:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Make script executable
+      run: chmod +x setup_server.sh
+
+    - name: Check script syntax
+      run: bash -n setup_server.sh
+
+    - name: Run basic lint check
+      run: |
+        sudo apt update
+        sudo apt install -y shellcheck
+        shellcheck setup_server.sh
